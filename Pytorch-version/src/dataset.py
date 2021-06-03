@@ -193,7 +193,7 @@ def get_blogs_data(dataset, author_num, max_doc=None, max_len=None):
     return text_train, syntax_train, Y_train, text_test, syntax_test, Y_test, label_list
 
 
-def get_others_data(dataset, author_num, train_ratio=0.5, max_len=None):
+def get_others_data(dataset, author_num, train_ratio=0.8, max_len=None):
     text_train = []
     syntax_train = []
     Y_train = []
