@@ -56,8 +56,8 @@ class SyntaxDataset(Dataset):
             max_len = max(max_len, len(item))
 
         # 将文档语法编码字符转成数字
-        self.syntax_train_code = np.array(transform(syntax_train, label_dic, max_len), np.int64)
-        self.syntax_test_code = np.array(transform(syntax_test, label_dic, max_len), np.int64)
+        self.syntax_train_code = np.array(transform(syntax_train, label_dic, max_len), np.int16)
+        self.syntax_test_code = np.array(transform(syntax_test, label_dic, max_len), np.int16)
         print('syntax code map end ...')
 
         tmp = []
@@ -69,8 +69,8 @@ class SyntaxDataset(Dataset):
         # 文本embeding的时候需要
         self.char_len = len(single_feats.feature_map)
         # 将文档字符转成数字
-        self.text_train_code = np.array(single_feats.transform(text_train), np.int64)
-        self.text_test_code = np.array(single_feats.transform(text_test), np.int64)
+        self.text_train_code = np.array(single_feats.transform(text_train), np.int16)
+        self.text_test_code = np.array(single_feats.transform(text_test), np.int16)
         print('text code map end ...')
 
         self.train_label = Y_train
@@ -239,7 +239,7 @@ def transform(syntax_data, dic, length):
     :param length: 文档包含的最多字符数
     :return:
     """
-    syntax_code = np.zeros((len(syntax_data), length, 150), dtype=np.int32)
+    syntax_code = np.zeros((len(syntax_data), length, 150), dtype=np.int16)
     print(syntax_code.shape)
     for i in range(len(syntax_data)):
         for j in range(len(syntax_data[i])):
