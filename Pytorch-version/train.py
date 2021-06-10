@@ -6,7 +6,7 @@ from src.model import SyntaxTextCNN
 from src.dataset import *
 
 seed = 1
-if torch.cuda.is_available():
+if False:  # torch.cude.is_available(): 
     torch.cuda.manual_seed(seed)  # 为当前GPU设置随机种子
     torch.cuda.manual_seed_all(seed)  # 为所有GPU设置随机种子
 else:
@@ -47,7 +47,7 @@ def train():
                               test_dataset.syntax_len,
                               150, [3, 4, 5],
                               args.author_num)
-        if torch.cuda.is_available():
+        if False:  # torch.cude.is_available(): 
             model.cuda()
     else:
         model = torch.load(saved_path + args.pre_trained)
@@ -59,7 +59,7 @@ def train():
     model.train()
     for i in range(args.epochs):
         for iter, (text_test, syntax_test, label_test) in enumerate(test_generator):
-            if torch.cuda.is_available():
+            if False:  # torch.cude.is_available(): 
                 text_test = text_test.cuda()
                 syntax_test = syntax_test.cuda()
                 label_test = label_test.cuda()
@@ -78,7 +78,7 @@ def train():
         loss_ls, te_label_ls, te_pred_ls = [], [], []
         with torch.no_grad():
             for text_test, syntax_test, label_test in tqdm(test_generator):
-                if torch.cuda.is_available():
+                if False:  # torch.cude.is_available(): 
                     text_test = text_test.cuda()
                     syntax_test = syntax_test.cuda()
                     label_test = label_test.cuda()
