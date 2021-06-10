@@ -48,11 +48,11 @@ class SyntaxTextCNN(nn.Module):
         self.fc1 = nn.Linear((text_dim_out + syntax_dim_out) * len(filter_list), cls_num)
 
     def forward(self, text, syntax):
-        text_output = self.text_embedding(text)
+        text_output = self.text_embedding(text.type(torch.LongTensor))
         text_output = text_output.unsqueeze(1)
         text_output = self.dropout(self.text_cnn(text_output))
 
-        syntax_output = self.syntax_embedding(syntax)
+        syntax_output = self.syntax_embedding(syntax.type(torch.LongTensor))
         syntax_output = syntax_output.unsqueeze(1)
         syntax_output = self.dropout(self.syntax_cnn(syntax_output))
 
