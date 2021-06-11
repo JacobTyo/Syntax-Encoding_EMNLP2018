@@ -61,8 +61,8 @@ def train():
     for i in range(args.epochs):
         for iter, (text_test, syntax_test, label_test) in enumerate(test_generator):
             if torch.cuda.is_available():
-                text_test = text_test.type(torch.LongTensor()).to(device=args.device)
-                syntax_test = syntax_test.type(torch.LongTensor()).to(device=args.device)
+                text_test = text_test.type(torch.LongTensor).to(device=args.device)
+                syntax_test = syntax_test.type(torch.LongTensor).to(device=args.device)
                 label_test = label_test.to(device=args.device)
 
             optimizer.zero_grad()
@@ -80,8 +80,8 @@ def train():
         with torch.no_grad():
             for text_test, syntax_test, label_test in tqdm(test_generator):
                 if torch.cuda.is_available():
-                    text_test = text_test.type(torch.LongTensor()).to(device=args.device)
-                    syntax_test = syntax_test.type(torch.LongTensor()).to(device=args.device)
+                    text_test = text_test.type(torch.LongTensor).to(device=args.device)
+                    syntax_test = syntax_test.type(torch.LongTensor).to(device=args.device)
                     label_test = label_test.to(device=args.device)
 
                 output = model(text_test, syntax_test)
