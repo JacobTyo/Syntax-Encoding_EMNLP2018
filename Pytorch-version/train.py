@@ -6,7 +6,7 @@ from src.model import SyntaxTextCNN
 from src.dataset import *
 
 seed = 1
-if False:  # torch.cude.is_available(): 
+if torch.cude.is_available():
     torch.cuda.manual_seed(seed)  # 为当前GPU设置随机种子
     torch.cuda.manual_seed_all(seed)  # 为所有GPU设置随机种子
 else:
@@ -28,6 +28,7 @@ parser.add_argument("--attn_heads", type=int, default=8, help="number of attenti
 parser.add_argument("--dataset", type=str, default="ag_news", choices=datasets)
 parser.add_argument("--author_num", type=int, default=4)
 parser.add_argument("--pre_trained", type=str, default=None)
+parser.add_argument("--device", type=str, default='cuda:0')
 args = parser.parse_args()
 
 
@@ -47,8 +48,8 @@ def train():
                               test_dataset.syntax_len,
                               150, [3, 4, 5],
                               args.author_num)
-        if False:  # torch.cude.is_available(): 
-            model.cuda()
+        if torch.cude.is_available():
+            model.to(device=args.device)
     else:
         model = torch.load(saved_path + args.pre_trained)
     criterion = nn.CrossEntropyLoss()
@@ -59,10 +60,10 @@ def train():
     model.train()
     for i in range(args.epochs):
         for iter, (text_test, syntax_test, label_test) in enumerate(test_generator):
-            if False:  # torch.cude.is_available(): 
-                text_test = text_test.cuda()
-                syntax_test = syntax_test.cuda()
-                label_test = label_test.cuda()
+            if torch.cude.is_available():
+                text_test = text_test.to(device=args.device)
+                syntax_test = syntax_test.to(device=args.device)
+                label_test = label_test.to(device=args.device)
 
             optimizer.zero_grad()
             output = model(text_test, syntax_test)
@@ -78,10 +79,10 @@ def train():
         loss_ls, te_label_ls, te_pred_ls = [], [], []
         with torch.no_grad():
             for text_test, syntax_test, label_test in tqdm(test_generator):
-                if False:  # torch.cude.is_available(): 
-                    text_test = text_test.cuda()
-                    syntax_test = syntax_test.cuda()
-                    label_test = label_test.cuda()
+                if torch.cude.is_available():
+                    text_test = text_test.to(device=args.device)
+                    syntax_test = syntax_test.to(device=args.device)
+                    label_test = label_test.to(device=args.device)
 
                 output = model(text_test, syntax_test)
                 te_label_ls.extend(label_test.clone().cpu())
